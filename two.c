@@ -1,4 +1,5 @@
 #include "two.h"
+#include "chaine.h"
 
 /*! \file two.c
  * \author JM Moreau

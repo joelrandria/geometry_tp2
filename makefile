@@ -1,7 +1,7 @@
-CFLAGS = -c -g -Wall
-#GL_INCLUDE    = -I/usr/include/GL
+CFLAGS = -c -g -Wall -std=gnu99
+GL_INCLUDE    = -I/usr/include/GL
 GL_LIBDIR    = -L. -L/usr/X11R6/lib
-GL_LIBRARIES = -lglut -lGL -lm # -lGLU -lXmu -lXext -lXi -lX11
+GL_LIBRARIES = -lglut -lGL -lm -lGLU # -lXmu -lXext -lXi -lX11
 CC=gcc
 OS = "unknown"
 
@@ -26,7 +26,7 @@ one.o : one.c
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
 two: two.o
 	$(CC) $(GL_LIBDIR) two.o $(GL_LIBRARIES) -o $@
-two.o : two.c
+two.o : two.c chaine.c
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
 #
 clean:

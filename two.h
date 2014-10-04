@@ -1,5 +1,5 @@
 #ifndef __TWO_H__
-#define TWO_H__
+#define __TWO_H__
 /*! \file two.h
  * \author JM Moreau
  * \date 2004
