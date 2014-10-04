@@ -158,6 +158,7 @@ chaine* removeI(chaine* ch, int i)
 		element* prec = p->prec, *suiv = p->suiv;
 		free(p);
 		prec->suiv = suiv;		suiv->prec = prec;
+		ch->nb--;
 	}
 	return ch;
 }
