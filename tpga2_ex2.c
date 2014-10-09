@@ -1,4 +1,4 @@
-#include <stdio.h>
+1#include <stdio.h>
 
 #include <GL/glut.h>
 
@@ -66,6 +66,7 @@ void process_mouse_events(int button, int state, int x, int y)
     {
       _vring = vertexring_enqueue(_vring, vertex_create(mouse_x, mouse_y), VR_FORWARD);
 
+      printf("Nouveau point ajouté:\r\n");
       printf("--- Anneau ---\r\n");
       vertexring_print(_vring, VR_FORWARD);
       printf("--------------\r\n");
