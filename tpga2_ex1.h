@@ -1,12 +1,12 @@
-#ifndef __TPGA2_EX2_H__
-#define __TPGA2_EX2_H__
+#ifndef __TPGA2_EX1_H__
+#define __TPGA2_EX1_H__
 
 #include "vertex_ring.h"
 
 #define CLIC_SENSITIVITY 20
 
-// Exécution de l'exercice 2
-void tpga2_ex2();
+// Exécution de l'exercice 1
+void tpga2_ex1(const char* output_filename);
 
 // Fonctions d'affichage
 void draw();

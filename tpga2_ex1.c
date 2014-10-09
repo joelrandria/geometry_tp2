@@ -1,15 +1,15 @@
-1#include <stdio.h>
+#include <stdio.h>
 
 #include <GL/glut.h>
 
 #include "tpga2.h"
-#include "tpga2_ex2.h"
+#include "tpga2_ex1.h"
 
-// Anneau de vertices utilisé pour recevoir les sommets créés par l'utilisateur
+// Anneau de sommets créés par l'utilisateur
 vertex_ring* _vring = 0;
 int _polygone_closed = 0;
 
-void tpga2_ex2()
+void tpga2_ex1(const char* output_filename)
 {
   glutDisplayFunc(draw);
   glutMouseFunc(process_mouse_events);
@@ -56,6 +56,9 @@ void process_mouse_events(int button, int state, int x, int y)
   float mouse_x;
   float mouse_y;
   vertex* clicked_vertex;
+
+  if (_polygone_closed)
+    return;
 
   if ((state == GLUT_UP) && (button == GLUT_LEFT_BUTTON))
   {
