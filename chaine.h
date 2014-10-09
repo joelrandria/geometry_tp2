@@ -6,17 +6,16 @@
 //liste doublement chainée
 typedef struct
 {
-	struct element* prem;	//pointeur sur le premier élément
-	struct element* der;	//pointeur sur le dernier élément
-	int nb;
+  struct element* prem;	//pointeur sur le premier élément
+  struct element* der;	//pointeur sur le dernier élément
+  int nb;
 } chaine;
 
 typedef struct
 {
-	vertex v;
-    struct element* prec;
-	struct element* suiv;	//pointeur vers le prochain élément 
-
+  vertex v;
+  struct element* prec;
+  struct element* suiv;	//pointeur vers le prochain élément 
 } element;
 
 chaine* initChaine();

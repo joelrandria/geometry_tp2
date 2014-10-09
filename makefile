@@ -1,8 +1,8 @@
 CFLAGS = -c -g -Wall -std=gnu99
-GL_INCLUDE    = -I/usr/include/GL
-GL_LIBDIR    = -L. -L/usr/X11R6/lib
+GL_INCLUDE = -I/usr/include/GL
+GL_LIBDIR = -L. -L/usr/X11R6/lib
 GL_LIBRARIES = -lglut -lGL -lm -lGLU # -lXmu -lXext -lXi -lX11
-CC=gcc
+CC = gcc
 OS = "unknown"
 
 # Add objectiveC library for MacOSX.
@@ -18,25 +18,25 @@ ifneq ($(strip $(shell $(CC) -v 2>&1 | grep -i "Linux")),)
  BROWSER = mozilla
 endif
 #
-job: one two dox
-	one -c4 && two -n100 && $(BROWSER) DOX/html/index.html &
-one: one.o
-	$(CC) $(GL_LIBDIR) one.o $(GL_LIBRARIES) -o $@
-one.o : one.c
+
+job: tpga2 #dox
+	#one -c4 && two -n100 && $(BROWSER) DOX/html/index.html &
+	#tpga2 -2 && tpga2 -3 && tpga2 -4 && tpga2 -5 && $(BROWSER) DOX/html/index.html &
+
+tpga2: tpga2.o tpga2_ex2.o vertex.o vertex_ring.o
+	$(CC) $(GL_LIBDIR) tpga2.o tpga2_ex2.o vertex.o vertex_ring.o $(GL_LIBRARIES) -o $@
+
+tpga2.o: tpga2.c
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
-two: two.o
-	$(CC) $(GL_LIBDIR) two.o $(GL_LIBRARIES) -o $@
-two.o : two.c chaine.c
-	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
-#
+
 clean:
 	@echo "operating system = $(OS)"
-	rm -rf *.o one two DOX
+	rm -rf *.o tpga2 DOX
 
 ################################################################################
 # Generate doxygen documentation of file two.c using command file two.dox.
-dox: two.c two.h
-	rm -rf DOX
-	doxygen two.dox
+#dox: two.c two.h
+#	rm -rf DOX
+#	doxygen two.dox
 #
 
