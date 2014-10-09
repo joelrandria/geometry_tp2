@@ -6,11 +6,11 @@
 #define CLIC_SENSITIVITY 20
 
 // Exécution de l'exercice 1
-void tpga2_ex1(const char* output_filename);
+void tpga2_ex1();
 
 // Fonctions d'affichage
 void draw();
-void draw_vertex(vertex* v);
+void draw_vertex(vertex_ring* r, void* args);
 
 // Gestionnaire d'évènements souris
 void windowpos_to_glpos(int window_width, int window_height,

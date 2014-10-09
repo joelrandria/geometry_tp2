@@ -9,7 +9,7 @@
 vertex_ring* _vring = 0;
 int _polygone_closed = 0;
 
-void tpga2_ex1(const char* output_filename)
+void tpga2_ex1()
 {
   glutDisplayFunc(draw);
   glutMouseFunc(process_mouse_events);
@@ -33,15 +33,15 @@ void draw()
     glColor3f(0.0, 1.0, 0.0);
   }
 
-  vertexring_run(_vring, draw_vertex, VR_FORWARD);
+  vertexring_run(_vring, draw_vertex, 0, VR_FORWARD);
 
   glEnd();
   glFlush();
   glutPostRedisplay();
 }
-void draw_vertex(vertex* v)
+void draw_vertex(vertex_ring* r, void* args)
 {
-  glVertex2f(v->coords[0], v->coords[1]);
+  glVertex2f(r->v->coords[0], r->v->coords[1]);
 }
 
 void windowpos_to_glpos(int window_width, int window_height,
@@ -69,15 +69,17 @@ void process_mouse_events(int button, int state, int x, int y)
     {
       _vring = vertexring_enqueue(_vring, vertex_create(mouse_x, mouse_y), VR_FORWARD);
 
-      printf("Nouveau point ajouté:\r\n");
-      printf("--- Anneau ---\r\n");
+      printf("Nouveau point ajouté\r\n");
+      printf("--- Points courants ---\r\n");
       vertexring_print(_vring, VR_FORWARD);
-      printf("--------------\r\n");
+      printf("-----------------------\r\n");
     }
     else if (clicked_vertex == _vring->v)
     {
       _polygone_closed = 1;
-      printf("Polygone saisi !\r\n");
+      printf("Polygone saisi\r\n");
+      vertexring_save(_vring, _optex1_filename);
+      printf("Polygone sauvegardé dans le fichier '%s'\r\n", _optex1_filename);
     }
   }
 }

@@ -13,7 +13,11 @@
 #define WINDOW_WIDTH 680
 #define WINDOW_HEIGHT 680
 
+// Accès aux options de la ligne de commandes
 extern char *optarg;
 extern int opterr;
+
+// Options exercice 1
+extern char* _optex1_filename;
 
 #endif
