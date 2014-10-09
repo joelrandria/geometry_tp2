@@ -23,8 +23,8 @@ job: tpga2 #dox
 	#one -c4 && two -n100 && $(BROWSER) DOX/html/index.html &
 	#tpga2 -2 && tpga2 -3 && tpga2 -4 && tpga2 -5 && $(BROWSER) DOX/html/index.html &
 
-tpga2: tpga2.o tpga2_ex2.o vertex.o vertex_ring.o
-	$(CC) $(GL_LIBDIR) tpga2.o tpga2_ex2.o vertex.o vertex_ring.o $(GL_LIBRARIES) -o $@
+tpga2: tpga2.o tpga2_ex1.o vertex.o vertex_ring.o
+	$(CC) $(GL_LIBDIR) tpga2.o tpga2_ex1.o vertex.o vertex_ring.o $(GL_LIBRARIES) -o $@
 
 tpga2.o: tpga2.c
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
