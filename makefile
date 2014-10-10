@@ -20,6 +20,7 @@ endif
 #
 
 job: tpga2 #dox
+	./tpga2 -1 -otest.txt
 	#one -c4 && two -n100 && $(BROWSER) DOX/html/index.html &
 	#tpga2 -2 && tpga2 -3 && tpga2 -4 && tpga2 -5 && $(BROWSER) DOX/html/index.html &
 

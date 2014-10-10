@@ -39,9 +39,9 @@ void draw()
   glFlush();
   glutPostRedisplay();
 }
-void draw_vertex(vertex_ring* r, void* args)
+void draw_vertex(const vertex_ring* r, void* args)
 {
-  glVertex2f(r->v->coords[0], r->v->coords[1]);
+  glVertex2f(r->v->X, r->v->Y);
 }
 
 void windowpos_to_glpos(int window_width, int window_height,

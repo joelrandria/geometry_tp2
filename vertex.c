@@ -1,20 +1,19 @@
 #include "vertex.h"
 
-#include <math.h>
-#include <stdlib.h>
 
-vertex* vertex_create(double x, double y)
+vertex* vertex_create(const double x, const double y)
 {
-  vertex* v;
-
-  v = malloc(sizeof(*v));
-  v->coords[0] = x;
-  v->coords[1] = y;
+  vertex* v = malloc(sizeof(*v));
+  v->X = x;
+  v->Y = y;
 
   return v;
 }
 
-float vertex_distance(vertex* v1, vertex* v2)
+//float vertex_distance(vertex* v1, vertex* v2)
+//conversion double vers float alors que tout est en double.
+double vertex_distance(const vertex* v1, const vertex* v2)
 {
-  return sqrt(pow((v2->coords[1] - v1->coords[1]), 2) + pow((v2->coords[0] - v1->coords[0]), 2));
+	return hypot(v2->Y - v1->Y, v2->X - v1->X);
+	//return sqrt(pow((v2->Y - v1->Y), 2) + pow((v2->X - v1->X), 2));
 }

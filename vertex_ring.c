@@ -5,44 +5,42 @@
 
 vertex_ring* vertexring_create(vertex* v)
 {
-  vertex_ring* item;
+	vertex_ring* item = malloc(sizeof(vertex_ring));
+	item->v = v;
+	item->BACKWARD = item;		item->FORWARD = item;
 
-  item = malloc(sizeof(vertex_ring));
-  item->v = v;
-  item->siblings[VR_BACKWARD] = item;
-  item->siblings[VR_FORWARD] = item;
-
-  return item;
+	return item;
 }
 
 void vertexring_length_(vertex_ring* r, void* args)
 {
-  ++*((int*)args);
+	++*((int*)args);
 }
 int vertexring_length(vertex_ring* ring)
 {
-  int count;
+	int count;
 
-  count = 0;
-  vertexring_run(ring, vertexring_length_, &count, VR_FORWARD);
+	count = 0;
+	vertexring_run(ring, vertexring_length_, &count, VR_FORWARD);
 
-  return count;
+	return count;
 }
 
 void vertexring_last_(vertex_ring* r, void* args)
 {
-  *((vertex_ring**)args) = r;
+	*((vertex_ring**)args) = r;
 }
-vertex_ring* vertexring_last(vertex_ring* ring, int direction)
+vertex_ring* vertexring_last(vertex_ring* ring, const int direction)
 {
-  vertex_ring* last;
+	vertex_ring* last;
 
-  last = 0;
-  vertexring_run(ring, vertexring_last_, &last, VR_FORWARD);
+	last = 0;
+	vertexring_run(ring, vertexring_last_, &last, VR_FORWARD);
 
-  return last;
+	return last;
 }
-vertex* vertexring_findbycoord(vertex_ring* ring, float x, float y, float epsilon)
+/*
+vertex* vertexring_findbycoord(vertex_ring* ring, const float x, const float y, const float epsilon)
 {
   vertex ref;
   vertex_ring* beginning;
@@ -66,85 +64,103 @@ vertex* vertexring_findbycoord(vertex_ring* ring, float x, float y, float epsilo
   }
 
   return 0;
+}*/
+
+vertex* vertexring_findbycoord(vertex_ring* ring, const float x, const float y, const float epsilon)
+{
+	if (!ring)
+		return NULL;
+	const vertex ref = { .X = x, .Y = y };
+	//ref.X = x;  ref.Y = y;
+	
+	const vertex_ring* beginning = ring;
+	do
+	{
+		if (vertex_distance(ring->v, &ref) < epsilon)
+			return (ring->v);
+		ring = ring->FORWARD;
+	}
+	while (ring != beginning);
+
+	return NULL;
 }
 
-vertex_ring* vertexring_add(vertex_ring* ring, vertex* v, int direction)
+vertex_ring* vertexring_add(vertex_ring* ring, vertex* v, const int direction)
 {
-  vertex_ring* temp;
-  vertex_ring* new_item;
+	vertex_ring* temp;
+	vertex_ring* new_item = vertexring_create(v);
 
-  new_item = vertexring_create(v);
+	if (!ring)
+		return new_item;
 
-  if (!ring)
-    return new_item;
+	//on place new_item entre les vertexring temp et ring
+	temp = ring->siblings[direction];
 
-  temp = ring->siblings[direction];
+	ring->siblings[direction] = new_item;
 
-  ring->siblings[direction] = new_item;
+	new_item->siblings[direction] = temp;
+	temp->siblings[!direction] = new_item;
 
-  new_item->siblings[direction] = temp;
-  temp->siblings[!direction] = new_item;
+	new_item->siblings[!direction] = ring;
 
-  new_item->siblings[!direction] = ring;
-
-  return new_item;
+	return new_item;
 }
-vertex_ring* vertexring_enqueue(vertex_ring* ring, vertex* v, int direction)
+vertex_ring* vertexring_enqueue(vertex_ring* ring, vertex* v, const int direction)
 {
-  vertex_ring* last;
+	vertex_ring* last;
 
-  last = vertexring_last(ring, direction);
-  if (!last)
-    return vertexring_create(v);
+	last = vertexring_last(ring, direction);
+	if (!last)
+		return vertexring_create(v);
 
-  vertexring_add(last, v, direction);
+	vertexring_add(last, v, direction);
 
-  return ring;
+	return ring;
 }
 
 void vertexring_print_(vertex_ring* r, void* args)
 {
-  printf("%d %d\r\n", (int)r->v->coords[0], (int)r->v->coords[1]);
+	printf("%d %d\r\n", (int)r->v->X, (int)r->v->Y);
 }
-void vertexring_print(vertex_ring* ring, int direction)
+void vertexring_print(vertex_ring* ring, const int direction)
 {
-  vertexring_run(ring, vertexring_print_, 0, direction);
+	vertexring_run(ring, vertexring_print_, 0, direction);
 }
 
-void vertexring_run(vertex_ring* ring, void(*func)(vertex_ring* r, void* args), void* args, int direction)
+void vertexring_run(vertex_ring* ring, void(*func)(vertex_ring* r, void* args), void* args, const int direction)
 {
-  vertex_ring* beginning;
+	const vertex_ring* beginning;
 
-  if (!ring)
-    return;
+	if (!ring)
+		return;
 
-  beginning = ring;
+	beginning = ring;
 
-  func(ring, args);
+	func(ring, args);
 
-  while (ring->siblings[direction] != beginning)
-  {
-    ring = ring->siblings[direction];
+	while (ring->siblings[direction] != beginning)
+	{
+		ring = ring->siblings[direction];
 
-    func(ring, args);
-  }
+		func(ring, args);
+	}
 }
 
 void vertexring_save_(vertex_ring* r, void* args)
 {
-  fprintf((FILE*)args, ", %f %f", r->v->coords[0], r->v->coords[1]);
+	fprintf((FILE*)args, ", %f %f", r->v->X, r->v->Y);
 }
 void vertexring_save(vertex_ring* ring, const char* path)
 {
-  FILE* file;
+	FILE* file;
 
-  file = fopen(path, "w+");
+	file = fopen(path, "w+");
 
-  fprintf(file, "%d", vertexring_length(ring));
+	fprintf(file, "%d", vertexring_length(ring));
 
-  vertexring_run(ring, vertexring_save_, file, VR_FORWARD);
+	vertexring_run(ring, vertexring_save_, file, VR_FORWARD);
 
-  fprintf(file, "\r\n");
+	fprintf(file, "\r\n");
 
-  fclose(file);
+	fclose(file);
 }

@@ -9,6 +9,7 @@
 #include <GL/glut.h>
 
 #include "vertex.h"
+#include "tpga2_ex1.h"
 
 #define WINDOW_WIDTH 680
 #define WINDOW_HEIGHT 680

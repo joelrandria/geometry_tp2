@@ -10,7 +10,7 @@ void tpga2_ex1();
 
 // Fonctions d'affichage
 void draw();
-void draw_vertex(vertex_ring* r, void* args);
+void draw_vertex(const vertex_ring* r, void* args);
 
 // Gestionnaire d'évènements souris
 void windowpos_to_glpos(int window_width, int window_height,
