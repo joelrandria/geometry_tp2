@@ -37,5 +37,6 @@ void vertexring_run(vertex_ring* ring, void(*func)(vertex_ring* r, void* args), 
 
 // I/O
 void vertexring_save(vertex_ring* ring, const char* path);
+vertex_ring* vertexring_read(const char* path);
 
 #endif

@@ -129,12 +129,10 @@ void vertexring_print(vertex_ring* ring, const int direction)
 
 void vertexring_run(vertex_ring* ring, void(*func)(vertex_ring* r, void* args), void* args, const int direction)
 {
-	const vertex_ring* beginning;
-
 	if (!ring)
 		return;
 
-	beginning = ring;
+	const vertex_ring* beginning = ring;
 
 	func(ring, args);
 
@@ -152,9 +150,14 @@ void vertexring_save_(vertex_ring* r, void* args)
 }
 void vertexring_save(vertex_ring* ring, const char* path)
 {
-	FILE* file;
-
+	FILE* file = NULL; 
 	file = fopen(path, "w+");
+
+	if(file == NULL)
+	{
+		printf("Impossible d'écrire dans le fichier %s\n", path);
+		exit(1);
+	}
 
 	fprintf(file, "%d", vertexring_length(ring));
 
@@ -162,5 +165,43 @@ void vertexring_save(vertex_ring* ring, const char* path)
 
 	fprintf(file, "\r\n");
 
-	fclose(file);
+	if(fclose(file) == EOF)
+	{
+		printf("Problème de fermeture du fichier %s\n", path);
+		exit(1);
+	}
+}
+
+
+vertex_ring* vertex_ring_read(const char* path)
+{
+	FILE* file = NULL;
+	file = fopen(path, "r");
+	if(file == NULL)
+	{
+		printf("Impossible de lire dans le fichier %s\n", path);
+		exit(1);
+	}
+	
+	int count = 0;
+	fscanf(file, "%d", &count);
+	printf("nombre de points à déclarer : %d\n", count);
+	
+	vertex_ring* ring = NULL;
+	double x = 0, y = 0;
+	for(int i = 0;	i < count;	i++)
+	{
+		//printf("%c\n", fgetc(file));
+		fscanf(file, ", %lf %lf", &x, &y);
+		//printf("position : %lf %lf\n", x, y);
+		ring = vertexring_enqueue(ring, vertex_create(x,y) , VR_FORWARD);
+	}
+	
+	
+	if(fclose(file) == EOF)
+	{
+		printf("Problème de fermeture du fichier %s\n", path);
+		exit(1);
+	}
+	return ring;
 }

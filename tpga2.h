@@ -19,6 +19,6 @@ extern char *optarg;
 extern int opterr;
 
 // Options exercice 1
-extern char* _optex1_filename;
+extern char* _optex_filename;
 
 #endif
